@@ -6,12 +6,12 @@
   "packageManager": "pnpm@12.4.2",
   "engines": { "node": "24.21.0" },
   "scripts": {
-    "dev": "npx astro dev",
-    "check": "npx astro check",
-    "prebuild": "pnpm install --prefer-offline --ignore-scripts=false",
-    "build": "npx astro build",
-    "preview": "npx astro preview",
-    "deploy": "pnpm build && npx wrangler deploy"
+    "dev": "astro dev",
+    "check": "astro check",
+    "prebuild": "pnpm install --force --prefer-offline --ignore-scripts=false",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "pnpm build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.2",
