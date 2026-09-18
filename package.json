@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "prebuild": "pnpm install --force --prefer-offline --ignore-scripts=false",
+    "prebuild": "pnpm install --prefer-offline --ignore-scripts=false",
     "build": "astro build",
     "preview": "astro preview",
     "deploy": "pnpm build && wrangler deploy"
