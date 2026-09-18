@@ -1,0 +1,101 @@
+---
+import '../styles/global.css';
+export const prerender = true;
+
+const site = Astro.site;
+const canonical = site ? new URL(Astro.url.pathname, site).toString() : undefined;
+const hero = 'https://upload.wikimedia.org/wikipedia/commons/3/3c/WWII_Monument_Feat%2C_Almaty.jpg';
+const cathedral = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Zenkov_cathedral.jpg/1920px-Zenkov_cathedral.jpg';
+const aerial = 'https://upload.wikimedia.org/wikipedia/commons/b/b8/%D0%90%D0%BB%D0%BC%D0%B0%D1%82%D1%8B%2C_%D0%BF%D0%B0%D1%80%D0%BA_28_%D0%BF%D0%B0%D0%BD%D1%84%D0%B8%D0%BB%D0%BE%D0%B2%D1%86%D0%B5%D0%B2_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%282%29.jpg';
+const localImage = site ? new URL('/images/og-panfilov.jpg', site).toString() : undefined;
+
+const attraction = {
+  '@context':'https://schema.org', '@type':['TouristAttraction','Park'],
+  name:'28 гвардияшы-панфиловшылар саябағы', alternateName:'28 Panfilov Guardsmen Park',
+  description:'Алматының тарихи орталығындағы мемориалдық қалалық саябақ. Мұнда Вознесенск кафедралды соборы, Даңқ мемориалы, Мәңгілік алау және халық музыкалық аспаптар музейі орналасқан.',
+  address:{'@type':'PostalAddress',streetAddress:'7X53+GMJ, р. Малая Алматинка',addressLocality:'Алматы',addressCountry:'KZ'},
+  geo:{'@type':'GeoCoordinates',latitude:43.25972,longitude:76.95472},
+  openingHoursSpecification:[{'@type':'OpeningHoursSpecification',dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],opens:'00:00',closes:'23:59'}],
+  aggregateRating:{'@type':'AggregateRating',ratingValue:'4.8',reviewCount:'14264',bestRating:'5'},
+  isAccessibleForFree:true,
+  ...(canonical ? {url:canonical} : {}),
+  ...(localImage ? {image:[localImage]} : {})
+};
+const faq = {'@context':'https://schema.org','@type':'FAQPage',mainEntity:[
+  {'@type':'Question',name:'Саябаққа кіру ақылы ма?',acceptedAnswer:{'@type':'Answer',text:'Жоқ. Саябақтың ашық аумағына кіру тегін. Жекелеген музейлер мен іс-шаралардың өз билеті болуы мүмкін.'}},
+  {'@type':'Question',name:'Саябақ тәулік бойы ашық па?',acceptedAnswer:{'@type':'Answer',text:'Иә, саябақ ашық қоғамдық кеңістік ретінде тәулік бойы қолжетімді. Ғимараттар мен музейлердің жұмыс уақыты бөлек.'}},
+  {'@type':'Question',name:'Қанша уақыт жоспарлаған дұрыс?',acceptedAnswer:{'@type':'Answer',text:'Саябақ, собор және мемориалды асықпай көруге шамамен 1,5–2 сағат жеткілікті. Музейлерді қоссаңыз, көбірек уақыт қалдырыңыз.'}},
+  {'@type':'Question',name:'Қоғамдық көлікпен қалай барған ыңғайлы?',acceptedAnswer:{'@type':'Answer',text:'Орталықтан Жібек жолы метро станциясы арқылы келіп, одан әрі жаяу жүруге болады. Сондай-ақ саябақ маңында бірнеше автобус аялдамасы бар.'}}
+]};
+---
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>28 гвардияшы-панфиловшылар саябағы — Алматы</title>
+  <meta name="description" content="Алматыдағы 28 гвардияшы-панфиловшылар саябағына қысқа гид: тарихы, Мәңгілік алау, Вознесенск соборы, көлік, тұрақ, тамақ және жақын көрікті жерлер." />
+  {canonical && <link rel="canonical" href={canonical} />}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="28 гвардияшы-панфиловшылар саябағы" />
+  <meta property="og:description" content="Алматы жүрегіндегі жады, сәулет және тыныш жасыл аллеялар кеңістігі." />
+  {canonical && <meta property="og:url" content={canonical} />}
+  <meta property="og:image" content={localImage ?? '/images/og-panfilov.jpg'} />
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
+  <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="/icons/favicon-180.png" sizes="180x180" />
+  <script type="application/ld+json" set:html={JSON.stringify(attraction)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(faq)}></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
+  <script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-HXM22WWPKP');</script>
+</head>
+<body>
+  <header class="absolute inset-x-0 top-0 z-20 py-5">
+    <div class="container flex items-center justify-between gap-4">
+      <a href="#top" aria-label="Басты бет"><img src="/logo.svg" alt="28 Панфиловшылар саябағы" class="h-12 w-auto" /></a>
+      <nav class="hidden md:flex gap-6 text-sm text-stone-200"><a href="#visit">Бару</a><a href="#memory">Тарих</a><a href="#nearby">Маңай</a><a href="#faq">FAQ</a></nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="relative min-h-[88vh] flex items-end overflow-hidden">
+      <img src={hero} alt="Даңқ мемориалындағы ерлік композициясы" class="absolute inset-0 photo" fetchpriority="high" />
+      <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,12,10,.25),rgba(7,12,10,.95)_85%),linear-gradient(90deg,rgba(7,12,10,.8),transparent_70%)]"></div>
+      <div class="container relative z-10 pb-14 pt-40">
+        <p class="eyebrow mb-5">Алматы · тарихи-мемориалдық саябақ</p>
+        <h1 class="section-title max-w-4xl text-5xl md:text-7xl leading-[.98]">Жады сақталған<br/><span class="text-[#d8b56d]">жасыл кеңістік</span></h1>
+        <p class="mt-7 max-w-2xl text-lg leading-8 text-stone-200">28 гвардияшы-панфиловшылар саябағы — қала ортасындағы серуен орны ғана емес. Мұнда Мәңгілік алау, монументалды жады және Алматының ең танымал ағаш сәулет ескерткіштерінің бірі бір ансамбльге тоғысады.</p>
+        <div class="mt-8 flex flex-wrap gap-3"><span class="chip">★ 4.8 · 14 264 пікір</span><span class="chip">Тәулік бойы</span><span class="chip">Кіру тегін</span></div>
+      </div>
+    </section>
+
+    <section class="container py-20 grid lg:grid-cols-[1.05fr_.95fr] gap-12 items-center" id="memory">
+      <div><p class="eyebrow">Орынның мінезі</p><h2 class="section-title mt-3 text-4xl md:text-5xl">Тыныштық пен салтанат қатар сезілетін саябақ</h2><div class="rule my-7"></div><p class="small">Саябақтың тарихы XIX ғасырдағы Верный қаласының қоғамдық бақтарынан басталады. 1942 жылы оған генерал Иван Панфилов басқарған дивизия жауынгерлерінің құрметіне қазіргі атауы берілді. Даңқ мемориалы мен Мәңгілік алау 1975 жылы ашылған мемориалдық ансамбльдің өзегіне айналды.</p><p class="small mt-4">Серуен кезінде бір жағынан қалың ағаштар мен тыныш аллеяларды, екінші жағынан Вознесенск кафедралды соборының ашық түстерін және мемориалдың қатаң қола пластикасын көресіз.</p></div>
+      <div class="panel p-3 rounded-[2rem] h-[520px]"><img src={cathedral} alt="Вознесенск кафедралды соборы" class="photo rounded-[1.45rem]" loading="lazy" /></div>
+    </section>
+
+    <section class="bg-[#111c17] border-y border-white/10 py-20" id="visit"><div class="container"><p class="eyebrow">Сапарды жоспарлау</p><h2 class="section-title mt-3 text-4xl md:text-5xl">Бір қарағанда керек мәлімет</h2><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+      <article class="panel rounded-2xl p-6"><div class="text-2xl">₸</div><h3 class="font-semibold text-xl mt-4">Билет / шығын</h3><p class="small mt-2">Саябақ аумағына кіру тегін. Музейлерге билет бөлек алынады; баға мен кестені сол нысаннан нақтылаған дұрыс.</p></article>
+      <article class="panel rounded-2xl p-6"><div class="text-2xl">◷</div><h3 class="font-semibold text-xl mt-4">Үздік уақыт</h3><p class="small mt-2">Таңертең немесе күн еңкейген шақта серуен жайлырақ әрі фотосуретке жарық жұмсақ болады. 9 мамыр маңында адам көп болуы мүмкін.</p></article>
+      <article class="panel rounded-2xl p-6"><div class="text-2xl">↝</div><h3 class="font-semibold text-xl mt-4">Ұсынылатын уақыт</h3><p class="small mt-2">Негізгі аллеялар, собор және мемориал үшін 1,5–2 сағат. Музейлерді қоссаңыз, жарты күнге дейін созуға болады.</p></article>
+      <article class="panel rounded-2xl p-6"><div class="text-2xl">P</div><h3 class="font-semibold text-xl mt-4">Тұрақ</h3><p class="small mt-2">Саябақ ішіне көлік кірмейді. Зенков көшесі жағында туристік автобустарға белгіленген тұрақ орындары бар; жеке көлікке көше бойы/ақылы тұрақтарды қараңыз.</p></article>
+    </div></div></section>
+
+    <section class="container py-20 grid lg:grid-cols-2 gap-10 items-start">
+      <div><p class="eyebrow">Толық көлік</p><h2 class="section-title mt-3 text-4xl">Қалай жетуге болады</h2><div class="mt-7 space-y-5"><div class="panel rounded-2xl p-6"><h3 class="font-semibold">Метро + жаяу</h3><p class="small mt-2">«Жібек жолы» станциясынан орталық көшелер арқылы саябаққа жаяу баруға ыңғайлы. Бағытты картадан нақтылап алыңыз.</p></div><div class="panel rounded-2xl p-6"><h3 class="font-semibold">Автобус / такси</h3><p class="small mt-2">Саябақ айналасында бірнеше аялдама бар. Таксиге «28 гвардияшы-панфиловшылар саябағы» немесе «Вознесенск соборы» деп көрсету оңай.</p></div><div class="panel rounded-2xl p-6"><h3 class="font-semibold">Жаяу маршрут</h3><p class="small mt-2">Көк базармен біріктіру ыңғайлы: базардан саябаққа дейін орталық кварталдар арқылы қысқа серуен жасап келуге болады.</p></div></div></div>
+      <div class="panel rounded-[2rem] p-3 overflow-hidden min-h-[520px]"><iframe title="28 гвардияшы-панфиловшылар саябағы картасы" src="https://www.google.com/maps?q=28%20%D0%B3%D0%B2%D0%B0%D1%80%D0%B4%D0%B8%D1%8F%D1%88%D1%8B-%D0%BF%D0%B0%D0%BD%D1%84%D0%B8%D0%BB%D0%BE%D0%B2%D1%88%D1%8B%D0%BB%D0%B0%D1%80%20%D1%81%D0%B0%D1%8F%D0%B1%D0%B0%D2%93%D1%8B%20Almaty&output=embed&hl=kk" class="w-full h-[500px] rounded-[1.45rem] border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </section>
+
+    <section class="relative overflow-hidden py-24"><img src={aerial} alt="Саябақтың әуеден көрінісі" class="absolute inset-0 photo opacity-25" loading="lazy"/><div class="absolute inset-0 bg-[#0b1310]/75"></div><div class="container relative"><p class="eyebrow">Серуен өзегі</p><h2 class="section-title mt-3 max-w-3xl text-4xl md:text-5xl">Үш нүктені жібермеңіз</h2><div class="grid md:grid-cols-3 gap-5 mt-10"><article class="panel rounded-2xl p-7"><div class="text-[#d8b56d] text-sm">01</div><h3 class="text-2xl font-semibold mt-3">Вознесенск соборы</h3><p class="small mt-3">XX ғасыр басындағы әйгілі ағаш кафедралды собор. Сыртқы фасадын асықпай айналып көруге және ғибадат орнына құрметпен кіруге болады.</p></article><article class="panel rounded-2xl p-7"><div class="text-[#d8b56d] text-sm">02</div><h3 class="text-2xl font-semibold mt-3">Даңқ мемориалы</h3><p class="small mt-3">1975 жылы ашылған монументалды кешен. Орталық композиция мен Мәңгілік алау саябақтың мемориалдық мағынасын айқындайды.</p></article><article class="panel rounded-2xl p-7"><div class="text-[#d8b56d] text-sm">03</div><h3 class="text-2xl font-semibold mt-3">Ықылас музейі</h3><p class="small mt-3">Қазақтың дәстүрлі музыкалық аспаптарына арналған музей тарихи ағаш ғимаратта орналасқан.</p></article></div></div></section>
+
+    <section class="container py-20" id="nearby"><p class="eyebrow">Маңайдағы жоспар</p><h2 class="section-title mt-3 text-4xl md:text-5xl">Тамақ пен көрікті орындар</h2><div class="grid lg:grid-cols-2 gap-8 mt-10"><div class="panel rounded-3xl p-7"><h3 class="text-2xl font-semibold">Жақын жерде тамақтану</h3><p class="small mt-3">Саябақ ішіндегі және Панфилов/Қазыбек би көшелері бойындағы кафелер серуен арасында ыңғайлы. Көк базарға барсаңыз, кептірілген жеміс, жаңғақ, нан-тоқаш және жергілікті өнімдерді көруге болады.</p><div class="mt-5 flex flex-wrap gap-2"><span class="chip">Agosto Coffee</span><span class="chip">КофеБара</span><span class="chip">Көк базар</span></div></div><div class="panel rounded-3xl p-7"><h3 class="text-2xl font-semibold">Жақын көрікті жерлер</h3><p class="small mt-3">Саябақтың өзінде Вознесенск соборы мен Ықылас музейі бар. Одан әрі Көк базарға, Панфилов жаяу жүргіншілер көшесіне және орталық Алматының тарихи кварталдарына жалғастыруға болады.</p><div class="mt-5 flex flex-wrap gap-2"><span class="chip">Вознесенск соборы</span><span class="chip">Ықылас музейі</span><span class="chip">Көк базар</span></div></div></div></section>
+
+    <section class="bg-[#111c17] border-y border-white/10 py-20" id="faq"><div class="container max-w-4xl"><p class="eyebrow">FAQ</p><h2 class="section-title mt-3 text-4xl md:text-5xl">Жиі қойылатын сұрақтар</h2><div class="mt-8 divide-y divide-white/10 border-y border-white/10"><details class="py-5" open><summary class="cursor-pointer font-semibold text-lg">Саябаққа кіру ақылы ма?</summary><p class="small mt-3">Жоқ, саябақтың ашық аумағына кіру тегін. Музейлер мен арнайы іс-шаралардың өз билеті болуы мүмкін.</p></details><details class="py-5"><summary class="cursor-pointer font-semibold text-lg">Саябақ тәулік бойы ашық па?</summary><p class="small mt-3">Иә. Бірақ собор, музей және кафе секілді ішкі нысандардың кестесі бөлек.</p></details><details class="py-5"><summary class="cursor-pointer font-semibold text-lg">Қанша уақыт жоспарлаған дұрыс?</summary><p class="small mt-3">1,5–2 сағат — негізгі көрікті нүктелерге жеткілікті. Музейлерді қоссanız, көбірек уақыт қарастырыңыз.</p></details><details class="py-5"><summary class="cursor-pointer font-semibold text-lg">Баламен келуге бола ма?</summary><p class="small mt-3">Иә, аллеялар серуенге қолайлы. Мемориал аумағында тыныштық пен құрметті мінез-құлықты сақтаған жөн.</p></details></div></div></section>
+
+    <section class="container py-14 text-sm text-stone-400"><h2 class="text-stone-200 font-semibold">Фото және дерек ескертпесі</h2><p class="mt-3 leading-7">Фотолар: Wikimedia Commons — Nikolai Bulykin (CC BY-SA 4.0), Petar Milošević (CC BY-SA 4.0), Ken and Nyetta (CC BY 2.0). Сапар алдында музейлердің жұмыс уақытын және уақытша іс-шараларды ресми арналардан тексеріңіз.</p></section>
+  </main>
+
+  <footer class="border-t border-white/10 py-10"><div class="container flex flex-col md:flex-row gap-6 justify-between items-start md:items-center"><img src="/logo.svg" alt="28 Панфиловшылар саябағы" class="h-10 w-auto opacity-90"/><div class="text-sm text-stone-400 md:text-right"><p>Бұл сайт саябақтың ресми сайты емес, тәуелсіз ақпараттық гид.</p><p class="mt-2"><a href="#privacy">Құпиялық</a> · <a href="#cookies">Cookie</a> · <a href="#terms">Пайдалану шарттары</a></p></div></div><div class="container mt-8 grid md:grid-cols-3 gap-4 text-xs text-stone-500"><details id="privacy"><summary class="cursor-pointer text-stone-300">Құпиялық</summary><p class="mt-2 leading-6">Сайтта тіркелу формасы жоқ. GA4 анонимдендірілген пайдалану статистикасын жинауы мүмкін.</p></details><details id="cookies"><summary class="cursor-pointer text-stone-300">Cookie баптауы</summary><p class="mt-2 leading-6">Сайттың өз аккаунттық cookie-лері жоқ; аналитикаға қатысты cookie-лер браузер саясатына байланысты қолданылуы мүмкін.</p></details><details id="terms"><summary class="cursor-pointer text-stone-300">Пайдалану шарттары</summary><p class="mt-2 leading-6">Ақпарат сапарды жоспарлауға арналған анықтамалық сипатта. Кесте мен қызмет шарттарын ресми көзден қайта тексеріңіз.</p></details></div></footer>
+</body>
+</html>
