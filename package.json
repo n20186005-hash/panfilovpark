@@ -6,11 +6,11 @@
   "packageManager": "pnpm@12.4.2",
   "engines": { "node": "24.21.0" },
   "scripts": {
-    "dev": "astro dev",
-    "check": "astro check",
-    "build": "astro build",
-    "preview": "astro preview",
-    "deploy": "pnpm build && wrangler deploy"
+    "dev": "pnpm exec astro dev",
+    "check": "pnpm exec astro check",
+    "build": "pnpm exec astro build",
+    "preview": "pnpm exec astro preview",
+    "deploy": "pnpm build && pnpm exec wrangler deploy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.3.2",
