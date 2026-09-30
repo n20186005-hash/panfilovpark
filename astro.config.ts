@@ -3,13 +3,13 @@ import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-const configuredSite = process.env.SITE_URL?.trim();
-const integrations = configuredSite ? [sitemap()] : [];
+// Hardcoded so canonical/og:url/sitemap are always produced (overridable via SITE_URL).
+const site = (process.env.SITE_URL?.trim() || 'https://panfilovpark.com').replace(/\/$/, '') + '/';
 
 export default defineConfig({
-  ...(configuredSite ? { site: configuredSite } : {}),
+  site,
   output: 'server',
   adapter: cloudflare(),
-  integrations,
-  vite: { plugins: [tailwindcss()] }
+  integrations: [sitemap()],
+  vite: { plugins: [tailwindcss()] },
 });

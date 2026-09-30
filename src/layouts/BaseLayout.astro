@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import { locales, localeMeta, pagePath, hreflangAlternates, SITE } from '../i18n';
+import { content } from '../content/guide';
+
+interface Props {
+  locale: 'kk' | 'ru' | 'en';
+  title: string;
+  description: string;
+  jsonLd: Record<string, unknown>[];
+}
+
+const { locale, title, description, jsonLd } = Astro.props;
+
+const base = SITE.replace(/\/$/, '');
+const canonical = base + pagePath(locale);
+const localImage = base + '/images/og-panfilov.jpg';
+const alternates = hreflangAlternates(base);
+
+const c = content[locale];
+const nav = c.nav;
+const switcher = locales.filter((l) => l !== locale);
+const meta = localeMeta[locale];
+---
+
+<!doctype html>
+<html lang={meta.htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={localImage} />
+    <meta property="og:locale" content={meta.ogLocale} />
+    <meta property="og:site_name" content="Panfilov Park Almaty" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={localImage} />
+    <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
+    <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/icons/favicon-180.png" sizes="180x180" />
+    {jsonLd.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
+    <script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-HXM22WWPKP');</script>
+  </head>
+  <body>
+    <header class="absolute inset-x-0 top-0 z-20 py-5">
+      <div class="container flex items-center justify-between gap-4">
+        <a href={pagePath(locale)} aria-label={c.attractionName}><img src="/logo.svg" alt={c.attractionName} class="h-12 w-auto" /></a>
+        <nav class="hidden md:flex gap-6 text-sm text-stone-200">
+          <a href="#visit">{nav[0]}</a>
+          <a href="#memory">{nav[1]}</a>
+          <a href="#nearby">{nav[2]}</a>
+          <a href="#faq">{nav[3]}</a>
+        </nav>
+        <div class="flex items-center gap-2 text-sm">
+          {switcher.map((l) => <a href={pagePath(l)} class="rounded-full border border-white/20 px-3 py-1 text-stone-200 hover:bg-white/10">{l.toUpperCase()}</a>)}
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <slot />
+    </main>
+
+    <footer class="border-t border-white/10 py-10">
+      <div class="container flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+        <img src="/logo.svg" alt={c.attractionName} class="h-10 w-auto opacity-90" />
+        <div class="text-sm text-stone-400 md:text-right">
+          <p>{c.footer.disclaimer}</p>
+          <p class="mt-2 flex flex-wrap gap-2 justify-end">
+            <a href="#privacy">{c.footer.privacy.title}</a> · <a href="#cookies">{c.footer.cookies.title}</a> · <a href="#terms">{c.footer.terms.title}</a>
+          </p>
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+          {switcher.map((l) => <a href={pagePath(l)} class="rounded-full border border-white/20 px-3 py-1 text-stone-200 hover:bg-white/10">{l.toUpperCase()}</a>)}
+        </div>
+      </div>
+      <div class="container mt-8 grid md:grid-cols-3 gap-4 text-xs text-stone-500">
+        <details id="privacy"><summary class="cursor-pointer text-stone-300">{c.footer.privacy.title}</summary><p class="mt-2 leading-6">{c.footer.privacy.text}</p></details>
+        <details id="cookies"><summary class="cursor-pointer text-stone-300">{c.footer.cookies.title}</summary><p class="mt-2 leading-6">{c.footer.cookies.text}</p></details>
+        <details id="terms"><summary class="cursor-pointer text-stone-300">{c.footer.terms.title}</summary><p class="mt-2 leading-6">{c.footer.terms.text}</p></details>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GuideSections from '../../components/GuideSections.astro';
+import { content } from '../../content/guide';
+import { buildAttraction, buildFaq } from '../../lib/schema';
+import { SITE } from '../../i18n';
+
+export const prerender = true;
+
+const locale = 'en';
+const c = content[locale];
+const base = SITE.replace(/\/$/, '');
+const canonical = base + '/en/';
+const image = base + '/images/og-panfilov.jpg';
+const jsonLd = [buildAttraction(locale, canonical, image), buildFaq(locale)];
+---
+
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} jsonLd={jsonLd}>
+  <GuideSections locale={locale} />
+</BaseLayout>

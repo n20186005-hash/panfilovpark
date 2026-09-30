@@ -1,0 +1,129 @@
+---
+import { content } from '../content/guide';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = content[locale];
+
+const hero = 'https://upload.wikimedia.org/wikipedia/commons/3/3c/WWII_Monument_Feat%2C_Almaty.jpg';
+const cathedral = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Zenkov_cathedral.jpg/1920px-Zenkov_cathedral.jpg';
+const aerial = 'https://upload.wikimedia.org/wikipedia/commons/b/b8/%D0%90%D0%BB%D0%BC%D0%B0%D1%82%D1%8B%2C_%D0%BF%D0%B0%D1%80%D0%BA_28_%D0%BF%D0%B0%D0%BD%D1%84%D0%B8%D0%BB%D0%BE%D0%B2%D1%86%D0%B5%D0%B2_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%282%29.jpg';
+
+const visitIcons = ['₸', '◷', '↝', 'P'];
+const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionName)}&output=embed&hl=${c.transport.mapHl}`;
+---
+
+<section class="relative min-h-[88vh] flex items-end overflow-hidden">
+  <img src={hero} alt={c.hero.imgAlt} class="absolute inset-0 photo" fetchpriority="high" />
+  <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,12,10,.25),rgba(7,12,10,.95)_85%),linear-gradient(90deg,rgba(7,12,10,.8),transparent_70%)]"></div>
+  <div class="container relative z-10 pb-14 pt-40">
+    <p class="eyebrow mb-5">{c.hero.eyebrow}</p>
+    <h1 class="section-title max-w-4xl text-5xl md:text-7xl leading-[.98]">{c.hero.h1a}<br /><span class="text-[#d8b56d]">{c.hero.h1b}</span></h1>
+    <p class="mt-7 max-w-2xl text-lg leading-8 text-stone-200">{c.hero.intro}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      {c.hero.chips.map((chip) => <span class="chip">{chip}</span>)}
+    </div>
+  </div>
+</section>
+
+<section class="container py-20 grid lg:grid-cols-[1.05fr_.95fr] gap-12 items-center" id="memory">
+  <div>
+    <p class="eyebrow">{c.memory.eyebrow}</p>
+    <h2 class="section-title mt-3 text-4xl md:text-5xl">{c.memory.heading}</h2>
+    <div class="rule my-7"></div>
+    <p class="small">{c.memory.body1}</p>
+    <p class="small mt-4">{c.memory.body2}</p>
+  </div>
+  <div class="panel p-3 rounded-[2rem] h-[520px]"><img src={cathedral} alt={c.memory.imgAlt} class="photo rounded-[1.45rem]" loading="lazy" /></div>
+</section>
+
+<section class="bg-[#111c17] border-y border-white/10 py-20" id="visit">
+  <div class="container">
+    <p class="eyebrow">{c.visit.eyebrow}</p>
+    <h2 class="section-title mt-3 text-4xl md:text-5xl">{c.visit.heading}</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+      {c.visit.cards.map((card, i) => (
+        <article class="panel rounded-2xl p-6">
+          <div class="text-2xl">{visitIcons[i]}</div>
+          <h3 class="font-semibold text-xl mt-4">{card.title}</h3>
+          <p class="small mt-2">{card.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="container py-20 grid lg:grid-cols-2 gap-10 items-start">
+  <div>
+    <p class="eyebrow">{c.transport.eyebrow}</p>
+    <h2 class="section-title mt-3 text-4xl">{c.transport.heading}</h2>
+    <div class="mt-7 space-y-5">
+      {c.transport.items.map((item) => (
+        <div class="panel rounded-2xl p-6">
+          <h3 class="font-semibold">{item.title}</h3>
+          <p class="small mt-2">{item.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="panel rounded-[2rem] p-3 overflow-hidden min-h-[520px]">
+    <iframe title={c.transport.mapAlt} src={mapSrc} class="w-full h-[500px] rounded-[1.45rem] border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+<section class="relative overflow-hidden py-24">
+  <img src={aerial} alt={c.hero.aerialAlt} class="absolute inset-0 photo opacity-25" loading="lazy" />
+  <div class="absolute inset-0 bg-[#0b1310]/75"></div>
+  <div class="container relative">
+    <p class="eyebrow">{c.points.eyebrow}</p>
+    <h2 class="section-title mt-3 max-w-3xl text-4xl md:text-5xl">{c.points.heading}</h2>
+    <div class="grid md:grid-cols-3 gap-5 mt-10">
+      {c.points.items.map((point) => (
+        <article class="panel rounded-2xl p-7">
+          <div class="text-[#d8b56d] text-sm">{point.num}</div>
+          <h3 class="text-2xl font-semibold mt-3">{point.title}</h3>
+          <p class="small mt-3">{point.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="container py-20" id="nearby">
+  <p class="eyebrow">{c.nearby.eyebrow}</p>
+  <h2 class="section-title mt-3 text-4xl md:text-5xl">{c.nearby.heading}</h2>
+  <div class="grid lg:grid-cols-2 gap-8 mt-10">
+    {c.nearby.cards.map((card) => (
+      <div class="panel rounded-3xl p-7">
+        <h3 class="text-2xl font-semibold">{card.title}</h3>
+        <p class="small mt-3">{card.text}</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {card.chips.map((chip) => <span class="chip">{chip}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<section class="bg-[#111c17] border-y border-white/10 py-20" id="faq">
+  <div class="container max-w-4xl">
+    <p class="eyebrow">{c.faq.eyebrow}</p>
+    <h2 class="section-title mt-3 text-4xl md:text-5xl">{c.faq.heading}</h2>
+    <div class="mt-8 divide-y divide-white/10 border-y border-white/10">
+      {c.faq.items.map((item, i) => (
+        <details class="py-5" open={i === 0}>
+          <summary class="cursor-pointer font-semibold text-lg">{item.q}</summary>
+          <p class="small mt-3">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="container py-14 text-sm text-stone-400">
+  <h2 class="text-stone-200 font-semibold">{c.sourceHeading}</h2>
+  <p class="mt-3 leading-7">{c.footerNote}</p>
+</section>
