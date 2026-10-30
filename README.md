@@ -1,30 +1,13 @@
-# 28 Panfilov Guardsmen Park — Astro site
+# Panfilov Park Almaty independent guide
 
-Kazakh-language single-page visitor guide built with Astro + Tailwind CSS + TypeScript for Cloudflare Workers.
+Astro7.3.3 server output with the Cloudflare adapter and Tailwind. Established Kazakh root, Russian /ru/ and English /en/ remain prerendered. A dynamic404 returns actual404/noindex.
 
-## Site URL
-Set the canonical domain only once at build time:
+Use Node24.21.0 and pnpm12.4.2: `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm run build`. Original prebuild prefer-offline installation and reviewed esbuild/workerd policy are retained; verify the lock remains unchanged after the complete command.
 
-```bash
-SITE_URL=https://your-real-domain.kz pnpm build
-```
+Site fallback: https://panfilovpark.com, overridable by SITE_URL. The entry wraps the existing adapter before its static path; existing HTTP/www and locale slash routes normalize to HTTPS apex preserving query/GET/HEAD. SESSION/IMAGES/ASSETS and connected-CI project-name override are preserved. No DNS/security/binding change is implied.
 
-If `SITE_URL` is empty, the project still builds. Canonical/absolute URL tags are omitted or stay relative and the sitemap integration is not enabled.
+Park24h/free information is attributed and separated from cathedral worship-dependent visiting and other venue terms. Naming/memorial dates are sourced; disputed wartime battle totals are not asserted. No unsupported parking, cafe, uniform-duration or full-route access promise remains.
 
-## Commands
+Existing automaticGA4 and GoogleMaps are disclosed in each language; possible hosting browsermeasurement and independent edge processing are separated. No consent switch is invented. No weather widget existed or was added.
 
-```bash
-corepack enable
-pnpm install --frozen-lockfile
-pnpm check
-pnpm build
-pnpm deploy
-```
-
-## Photos
-The page uses real photos from Wikimedia Commons at runtime because the build environment used for this delivery could not resolve external hosts for downloading binaries/assets. Source pages and licenses:
-- Park aerial — Nikolai Bulykin — CC BY-SA 4.0
-- Ascension Cathedral — Petar Milošević — CC BY-SA 4.0
-- WWII Monument “Feat” — Ken and Nyetta — CC BY 2.0
-
-To make the project fully offline, download those three files into `public/images/` and replace the three URL constants in `src/pages/index.astro` with local paths.
+Scenic assets are clearly labelled originalCC0 geometric illustrations, not photographs, maps or copies of particular memorial sculptures. New PNGcover derives from localSVG. Existing logos/icons and the old small JPEGlogo remain separately. See SOURCES.md and /ILLUSTRATION-CREDITS.txt.

@@ -22,7 +22,7 @@ export function pageUrl(base: string, locale: Locale): string {
 
 /** hreflang alternates incl. x-default -> English (international fallback). */
 export function hreflangAlternates(base: string): { hreflang: string; href: string }[] {
-  const pairs = locales.map((l) => ({ hreflang: l, href: pageUrl(base, l) }));
+  const pairs: {hreflang:string;href:string}[] = locales.map((l) => ({ hreflang: l, href: pageUrl(base, l) }));
   pairs.push({ hreflang: 'x-default', href: pageUrl(base, 'en') });
   return pairs;
 }

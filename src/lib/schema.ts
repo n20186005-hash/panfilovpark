@@ -1,35 +1,23 @@
 import { content } from '../content/guide';
 import type { Locale } from '../i18n';
 
-const openingHoursSpecification = [
-  {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    opens: '00:00',
-    closes: '23:59',
-  },
-];
-
-export function buildAttraction(locale: Locale, canonical?: string, image?: string) {
+export function buildAttraction(locale: Locale, canonical?: string, _image?: string) {
   const c = content[locale];
   return {
     '@context': 'https://schema.org',
     '@type': ['TouristAttraction', 'Park'],
+    '@id': 'https://panfilovpark.com/#park',
     name: c.attractionName,
     alternateName: c.attractionAlternate,
     description: c.attractionDescription,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '7X53+GMJ, р. Малая Алматинка',
       addressLocality: 'Алматы',
       addressCountry: 'KZ',
     },
     geo: { '@type': 'GeoCoordinates', latitude: 43.25972, longitude: 76.95472 },
-    openingHoursSpecification,
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.8', reviewCount: '14293', bestRating: '5' },
-    isAccessibleForFree: true,
-    ...(canonical ? { url: canonical } : {}),
-    ...(image ? { image: [image] } : {}),
+    ...(canonical ? { url: new URL('/',canonical).href, mainEntityOfPage:canonical } : {}),
+
   };
 }
 

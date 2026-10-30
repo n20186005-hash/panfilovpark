@@ -9,9 +9,9 @@ export const prerender = true;
 
 const locale = 'ru';
 const c = content[locale];
-const base = SITE.replace(/\/$/, '');
+const base = (Astro.site?.href ?? SITE).replace(/\/$/, '');
 const canonical = base + '/ru/';
-const image = base + '/images/og-panfilov.jpg';
+const image = base + '/images/og-panfilov.png';
 const jsonLd = [buildAttraction(locale, canonical, image), buildFaq(locale)];
 ---
 
