@@ -8,16 +8,16 @@ interface Props {
 const { locale } = Astro.props;
 const c = content[locale];
 
-const hero = '/images/park-illustration.svg';
-const cathedral = '/images/cathedral-illustration.svg';
-const aerial = '/images/avenue-illustration.svg';
+const hero = '/images/panfilov-memorial.jpg';
+const cathedral = '/images/zenkov-cathedral.jpg';
+const aerial = '/images/panfilov-aerial.jpg';
 
 const visitIcons = ['₸', '◷', '↝', 'P'];
 const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionName + ", Almaty, Kazakhstan")}&output=embed&hl=${c.transport.mapHl}`;
 ---
 
 <section class="relative min-h-[76svh] flex items-end overflow-hidden">
-  <img src={hero} alt={c.hero.imgAlt} class="absolute inset-0 photo" fetchpriority="high" />
+  <img src={hero} alt="Photograph of the Memorial of Glory in 28 Panfilov Guardsmen Park" class="absolute inset-0 photo" fetchpriority="high" />
   <div class="absolute inset-0 bg-[#07120d]/85"></div>
   <div class="container relative z-10 pb-14 pt-16">
     <p class="eyebrow mb-5">{c.hero.eyebrow}</p>
@@ -26,7 +26,6 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionN
     <div class="mt-8 flex flex-wrap gap-3">
       {c.hero.chips.map((chip) => <span class="chip">{chip}</span>)}
     </div>
-    <p class="mt-6 text-sm leading-7 text-stone-200">{c.visualNote} <a class="underline" href="/ILLUSTRATION-CREDITS.txt">CC0 ↗</a></p>
   </div>
 </section>
 
@@ -38,7 +37,7 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionN
     <p class="small">{c.memory.body1}</p>
     <p class="small mt-4">{c.memory.body2}</p>
   </div>
-  <figure class="panel p-3 rounded-[2rem]"><img src={cathedral} alt={c.memory.imgAlt} class="photo rounded-[1.45rem] aspect-[4/3]" loading="lazy" width="1440" height="900" /><figcaption class="mt-3 px-2 text-sm leading-7 text-stone-200">{c.visualNote}</figcaption></figure>
+  <figure class="panel p-3 rounded-[2rem]"><img src={cathedral} alt="Photograph of Ascension Cathedral in Almaty" class="photo rounded-[1.45rem] aspect-[4/3]" loading="lazy" width="1440" height="900" /></figure>
 </section>
 
 <section class="bg-[#111c17] border-y border-white/10 py-20" id="visit">
@@ -76,7 +75,7 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionN
 </section>
 
 <section class="relative overflow-hidden py-24">
-  <img src={aerial} alt={c.hero.aerialAlt} class="absolute inset-0 photo opacity-25" loading="lazy" />
+  <img src={aerial} alt="Aerial photograph of 28 Panfilov Guardsmen Park in Almaty" class="absolute inset-0 photo opacity-25" loading="lazy" />
   <div class="absolute inset-0 bg-[#0b1310]/75"></div>
   <div class="container relative">
     <p class="eyebrow">{c.points.eyebrow}</p>
@@ -128,5 +127,4 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionN
   <h2 class="text-stone-200 font-semibold">{c.sourceHeading}</h2>
   <p class="mt-3 leading-7">{c.footerNote}</p>
   <ul class="mt-5 flex flex-wrap gap-4">{c.sourceLinks.map(link=><li><a class="underline" href={link.url}>{link.label} ↗</a></li>)}<li><a class="underline" href="https://maps.app.goo.gl/UK46U3cZfGzQNqmQ8">Google Maps ↗</a></li></ul>
-  <p class="mt-5 leading-7">{c.visualNote} <a class="underline" href="/ILLUSTRATION-CREDITS.txt">CC0 1.0 ↗</a></p>
 </section>
