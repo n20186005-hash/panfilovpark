@@ -9,14 +9,22 @@ interface Props {
   description: string;
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
+  /** Absolute-in-site path incl. slashes, e.g. "/en/opening-hours/". Defaults to the locale home. */
+  path?: string;
 }
 
-const { locale, title, description, jsonLd = [], noindex=false } = Astro.props;
+const { locale, title, description, jsonLd = [], noindex=false, path } = Astro.props;
 
 const base = (Astro.site?.href ?? SITE).replace(/\/$/, '');
-const canonical = base + pagePath(locale);
+const canonical = base + (path ?? pagePath(locale));
 const localImage = base + '/images/og-panfilov.png';
-const alternates = noindex ? [] : hreflangAlternates(base);
+
+const isHome = ['/', '/en/', '/ru/'].includes(new URL(canonical).pathname);
+const alternates = noindex
+  ? []
+  : isHome
+    ? hreflangAlternates(base)
+    : [{ hreflang: 'en', href: canonical }, { hreflang: 'x-default', href: canonical }];
 
 const c = content[locale];
 const nav = c.nav;

@@ -1,6 +1,7 @@
 ---
 import { content } from '../content/guide';
 import type { Locale } from '../i18n';
+import GuidesSection from './GuidesSection.astro';
 
 interface Props {
   locale: Locale;
@@ -107,6 +108,8 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(c.attractionN
     ))}
   </div>
 </section>
+
+<GuidesSection />
 
 <section class="bg-[#111c17] border-y border-white/10 py-20" id="faq">
   <div class="container max-w-4xl">

@@ -1,0 +1,36 @@
+---
+import { subpages } from '../content/subpages';
+
+// Group the 35 sub-pages by cluster, preserving first-seen order.
+const order: string[] = [];
+const groups: Record<string, { label: string; href: string }[]> = {};
+for (const p of subpages) {
+  if (!groups[p.cluster]) {
+    groups[p.cluster] = [];
+    order.push(p.cluster);
+  }
+  groups[p.cluster].push({ label: p.hero.h1, href: `/en/${p.slug}/` });
+}
+---
+
+<section class="container py-20" id="guides">
+  <p class="eyebrow">Visitor guides</p>
+  <h2 class="section-title mt-3 text-4xl md:text-5xl">Plan every part of your visit</h2>
+  <p class="small mt-4 max-w-3xl">
+    Focused guides covering hours, tickets, getting there, the park’s monuments and cathedral, nearby sights,
+    food, walking routes and seasonal tips. Each opens as its own page so you can bookmark the one you need.
+  </p>
+
+  <div class="mt-10 grid gap-8 lg:grid-cols-2">
+    {order.map((cluster) => (
+      <div class="panel rounded-3xl p-7">
+        <h3 class="text-2xl font-semibold">{cluster}</h3>
+        <ul class="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-2">
+          {groups[cluster].map((g) => (
+            <li><a class="small underline text-stone-200 hover:text-[#edd69c]" href={g.href}>{g.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

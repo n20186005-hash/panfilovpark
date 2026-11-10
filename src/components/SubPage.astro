@@ -1,0 +1,179 @@
+---
+import type { SubPage } from '../content/subpages/types';
+
+interface Props {
+  page: SubPage;
+}
+const { page } = Astro.props;
+
+const home = '/en/';
+const mapSrc = (q: string, hl = 'en') =>
+  `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed&hl=${hl}`;
+---
+
+<nav aria-label="Breadcrumb" class="container pt-8 text-sm text-stone-400">
+  <ol class="flex flex-wrap gap-2 items-center">
+    <li><a class="underline" href={home}>Panfilov Park</a></li>
+    <li aria-hidden="true">›</li>
+    <li><span class="text-stone-200">{page.cluster}</span></li>
+    <li aria-hidden="true">›</li>
+    <li><span class="text-stone-300">{page.hero.h1}</span></li>
+  </ol>
+</nav>
+
+<section class="relative min-h-[64svh] flex items-end overflow-hidden mt-4">
+  <img src={page.hero.image} alt={page.hero.imgAlt} class="absolute inset-0 photo" fetchpriority="high" />
+  <div class="absolute inset-0 bg-[#07120d]/85"></div>
+  <div class="container relative z-10 pb-12 pt-14">
+    <p class="eyebrow mb-4">{page.hero.eyebrow}</p>
+    <h1 class="section-title max-w-4xl text-4xl sm:text-5xl lg:text-6xl leading-tight">{page.hero.h1}</h1>
+    <p class="mt-6 max-w-2xl text-lg leading-8 text-stone-200">{page.hero.intro}</p>
+    {page.hero.chips && (
+      <div class="mt-7 flex flex-wrap gap-3">
+        {page.hero.chips.map((chip) => <span class="chip">{chip}</span>)}
+      </div>
+    )}
+  </div>
+</section>
+
+<div class="container py-16 space-y-16">
+  {page.sections.map((s) => {
+    if (s.type === 'prose') {
+      return (
+        <section>
+          {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+          {s.heading && <h2 class="section-title mt-3 text-3xl md:text-4xl">{s.heading}</h2>}
+          {s.lead && <p class="mt-4 max-w-3xl text-lg text-stone-200 leading-8">{s.lead}</p>}
+          <div class="mt-5 max-w-3xl space-y-4">
+            {s.body.map((p) => <p class="small">{p}</p>)}
+          </div>
+        </section>
+      );
+    }
+    if (s.type === 'cards') {
+      const cols = s.columns ?? 3;
+      return (
+        <section>
+          {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+          {s.heading && <h2 class="section-title mt-3 text-3xl md:text-4xl">{s.heading}</h2>}
+          <div class={`grid gap-4 mt-8 md:grid-cols-2 ${cols === 3 ? 'lg:grid-cols-3' : cols === 4 ? 'lg:grid-cols-4' : ''}`}>
+            {s.items.map((item) => (
+              <article class="panel rounded-2xl p-6">
+                {item.icon && <div class="text-2xl mb-2">{item.icon}</div>}
+                <h3 class="font-semibold text-xl">{item.title}</h3>
+                <p class="small mt-2">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      );
+    }
+    if (s.type === 'list') {
+      const Tag = s.ordered ? 'ol' : 'ul';
+      return (
+        <section>
+          {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+          {s.heading && <h2 class="section-title mt-3 text-3xl md:text-4xl">{s.heading}</h2>}
+          <Tag class={`mt-7 max-w-3xl space-y-4 ${s.ordered ? 'list-decimal pl-6' : 'list-disc pl-6'}`}>
+            {s.items.map((item) => (
+              <li class="small">
+                {item.title && <span class="text-stone-100 font-semibold">{item.title}: </span>}
+                {item.text}
+              </li>
+            ))}
+          </Tag>
+        </section>
+      );
+    }
+    if (s.type === 'steps') {
+      return (
+        <section>
+          {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+          {s.heading && <h2 class="section-title mt-3 text-3xl md:text-4xl">{s.heading}</h2>}
+          <ol class="mt-8 max-w-3xl space-y-5 counter-reset-step">
+            {s.items.map((item, i) => (
+              <li class="panel rounded-2xl p-6">
+                <div class="text-[#d8b56d] text-sm">{String(i + 1).padStart(2, '0')}</div>
+                <h3 class="text-xl font-semibold mt-2">{item.title}</h3>
+                <p class="small mt-2">{item.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      );
+    }
+    if (s.type === 'facts') {
+      return (
+        <section>
+          {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+          {s.heading && <h2 class="section-title mt-3 text-3xl md:text-4xl">{s.heading}</h2>}
+          <dl class="mt-7 max-w-3xl divide-y divide-white/10 border-y border-white/10">
+            {s.items.map((item) => (
+              <div class="flex flex-col sm:flex-row sm:gap-6 py-3">
+                <dt class="sm:w-56 font-semibold text-stone-200">{item.k}</dt>
+                <dd class="small sm:flex-1">{item.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      );
+    }
+    if (s.type === 'callout') {
+      return (
+        <section class={`panel rounded-2xl p-6 border-l-4 ${s.tone === 'warn' ? 'border-[#d8b56d]' : 'border-[#d8b56d]'}`}>
+          <h3 class="font-semibold text-lg text-[#edd69c]">{s.title}</h3>
+          <p class="small mt-2">{s.text}</p>
+        </section>
+      );
+    }
+    if (s.type === 'map') {
+      return (
+        <section class="panel rounded-[2rem] p-3 overflow-hidden">
+          {s.heading && <h2 class="section-title m-4 text-2xl">{s.heading}</h2>}
+          <iframe title={s.alt} src={mapSrc(s.query, s.hl)} class="w-full h-[460px] rounded-[1.45rem] border-0" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </section>
+      );
+    }
+    return null;
+  })}
+
+  {page.faq.length > 0 && (
+    <section class="bg-[#111c17] border-y border-white/10 -mx-[max(0px,calc((100vw-1180px)/2))] py-14 px-[max(1rem,calc((100vw-1180px)/2))]">
+      <div class="container max-w-4xl">
+        <p class="eyebrow">FAQ</p>
+        <h2 class="section-title mt-3 text-3xl md:text-4xl">Frequently asked questions</h2>
+        <div class="mt-6 divide-y divide-white/10 border-y border-white/10">
+          {page.faq.map((item, i) => (
+            <details class="py-5" open={i === 0}>
+              <summary class="cursor-pointer font-semibold text-lg">{item.q}</summary>
+              <p class="small mt-3">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {page.related.length > 0 && (
+    <section>
+      <p class="eyebrow">Related guides</p>
+      <h2 class="section-title mt-3 text-3xl md:text-4xl">Continue planning</h2>
+      <div class="grid gap-4 mt-8 md:grid-cols-2 lg:grid-cols-3">
+        {page.related.map((r) => (
+          <a href={r.href} class="panel rounded-2xl p-6 hover:bg-white/5 transition">
+            <h3 class="font-semibold text-lg text-[#edd69c]">{r.label} →</h3>
+            {r.hint && <p class="small mt-2">{r.hint}</p>}
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="text-sm text-stone-400 border-t border-white/10 pt-8">
+    <h2 class="text-stone-200 font-semibold">Sources &amp; verification</h2>
+    <p class="mt-3 leading-7">Factual claims on this page were last reviewed {page.checked}. Listings such as opening hours, ticket terms, transport and venue access change; confirm with the operator or official source before you travel.</p>
+    <ul class="mt-4 flex flex-wrap gap-4">
+      {page.sources.map((link) => <li><a class="underline" href={link.url}>{link.label} ↗</a></li>)}
+    </ul>
+  </section>
+</div>
